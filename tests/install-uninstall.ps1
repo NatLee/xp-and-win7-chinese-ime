@@ -124,8 +124,12 @@ function Assert-State {
     else { Check (Test-RegAbsent $xpReg) "$Title : no REG.reg keys" }
     if ($Win7) { Check (Test-Reg $win7Reg) "$Title : Win7.reg keys and values present" }
     else { Check (Test-RegAbsent $win7Reg) "$Title : no Win7.reg keys" }
-    # The 64-bit cmd.exe must do the work, so nothing may land in the 32-bit registry.
-    Check (-not ($win7Reg.Keys | Where-Object { Test-Path (Wow6432 $_) })) "$Title : nothing in WOW6432Node"
+    # 32-bit programs read WOW6432Node. Windows shares this key between the two
+    # views, so the profile must show up (and go away) there as well.
+    $seen32 = @($win7Reg.Keys | Where-Object { Test-Path (Wow6432 $_) }).Count -eq $win7Reg.Keys.Count
+    $gone32 = -not ($win7Reg.Keys | Where-Object { Test-Path (Wow6432 $_) })
+    if ($Win7) { Check $seen32 "$Title : 32-bit programs see the Win7.reg keys too" }
+    else { Check $gone32 "$Title : no Win7.reg keys for 32-bit programs either" }
 }
 
 Assert-State 'clean runner' $false $false
