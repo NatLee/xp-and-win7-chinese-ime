@@ -123,8 +123,14 @@ docs/images/           README 的封面圖，原始檔在 src/hero.html
 - Windows 7 本來就內建 WIN7 舊注音，不需要安裝。在 Windows 7 上執行 `DELETE.BAT`，可能會連系統內建的那份一起刪掉（推論，沒有在 Windows 7 上確認）。
 - `DELETE.BAT` 不會清你帳號裡的輸入法清單，所以請照「移除」第 1 步先自己拿掉。
 
+## 檔案的著作權
+
+`old_typer_ver_bat/System32` 和 `old_typer_ver_bat/SysWOW64` 裡的 `phonXP.ime`、`uniime.dll` 和 3 個 `.tbl`，是 Windows XP SP2 和 Windows Server 2003 SP2 的 Microsoft 檔案，著作權屬於 Microsoft。放在這裡只是為了保存，讓還想用「ㄅ半」的人裝得回來。我寫的部分只有兩支批次檔、測試和說明。如果你在意授權，請改用最上面推薦的琦琦輸入法，它是開放原始碼的。
+
 ## 狀態
 
 這個 repo 已經封存，不再維護，也不再處理 issue 和 PR。要用「ㄅ半」，請看最上面推薦的琦琦輸入法。
+
+[Releases](https://github.com/NatLee/xp-and-win7-chinese-ime/releases) 裡的「舊注音安裝」（`1.0`）是 2017 年打包的舊版，沒有 2026 年的修正。如果還是要用這個 repo，請改用 GitHub 的「Code → Download ZIP」下載最新版。
 
 *By Nat Lee*
