@@ -1,0 +1,27 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    # A fresh Windows VM that is thrown away afterwards, so the install test can
+    # really write to System32 and HKLM.
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check line endings, encoding, .reg files and payload
+        shell: powershell
+        run: .\tests\check-files.ps1
+
+      - name: Install and remove the IMEs on this runner
+        shell: powershell
+        run: .\tests\install-uninstall.ps1

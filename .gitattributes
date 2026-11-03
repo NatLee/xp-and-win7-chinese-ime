@@ -15,3 +15,9 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# Batch files: cmd.exe can miss goto/call labels in LF-only files, so check
+# them out with CRLF whatever the local git settings are.
+*.bat text eol=crlf
+*.BAT text eol=crlf
+*.cmd text eol=crlf
