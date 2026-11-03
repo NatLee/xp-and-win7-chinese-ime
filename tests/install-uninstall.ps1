@@ -63,8 +63,10 @@ function Invoke-Bat {
     $p = [Diagnostics.Process]::Start($psi)
     $out = $p.StandardOutput.ReadToEndAsync()
     $err = $p.StandardError.ReadToEndAsync()
-    # choice reads one key per question from the pipe; at the end of the input it
-    # returns 255, which the scripts treat as "no".
+    # choice reads one key per question from the pipe and skips keys it doesn't
+    # know. Once the answers run out it returns 255, which the scripts treat as
+    # "no". (A pipe that never gets a single byte makes choice wait forever, so
+    # every run passes at least one answer.)
     $p.StandardInput.Write($Answers)
     $p.StandardInput.Close()
     if (-not $p.WaitForExit(120000)) { $p.Kill(); throw "$Bat did not finish within 2 minutes" }
@@ -152,8 +154,8 @@ Assert-State 'after ARM64' $false $false
 # Answers.
 Test-Run 'SETUP, answer N N' $setup 'NN' 0 | Out-Null
 Assert-State 'after N N' $false $false
-Test-Run 'SETUP, no input at all' $setup '' 0 | Out-Null
-Assert-State 'after no input' $false $false
+Test-Run 'SETUP, answers run out after N' $setup 'N' 0 | Out-Null
+Assert-State 'after answers run out' $false $false
 Test-Run 'SETUP, XP only (typo first)' $setup 'xYN' 0 | Out-Null
 Assert-State 'XP only' $true $false
 Test-Run 'DELETE, answer Y' $delete 'Y' 0 | Out-Null
